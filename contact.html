@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - My University Website</title>
+</head>
+
+<body bgcolor="#F5F7F9" text="#222222" link="#1F4E79" vlink="#5B3A8E" alink="#CC6600">
+    <header>
+        <h1><font color="#1F4E79">Contacto</font></h1>
+        <p><font color="#666666">Completa el formulario para ponerte en contacto</font></p>
+    </header>
+
+    <hr color="#1F4E79">
+
+    <nav>
+        <table border="2" bordercolor="#1F4E79" bgcolor="#EAF2F8" cellpadding="6" align="center">
+            <tr>
+                <td>
+                    <a href="index.html">Home</a> |
+                    <a href="courses.html">Courses</a> |
+                    <a href="schedule.html">Schedule</a> |
+                    <a href="hobbies.html">Hobbies</a> |
+                    <a href="clubs.html">Clubs</a> |
+                    <a href="projects.html">Projects</a> |
+                    <a href="contact.html">Contact</a>
+                </td>
+            </tr>
+        </table>
+    </nav>
+
+    <hr color="#999999">
+
+    <main>
+        <section>
+            <h2><font color="#1F4E79">Formulario de contacto</font></h2>
+            <form action="#" method="post">
+                <p>
+                    <label for="name">Nombre:</label><br>
+                    <input type="text" id="name" name="name" required>
+                </p>
+                <p>
+                    <label for="email">Correo electrónico:</label><br>
+                    <input type="email" id="email" name="email" required>
+                </p>
+                <p>
+                    <label for="birthdate">Fecha de nacimiento:</label><br>
+                    <input type="date" id="birthdate" name="birthdate">
+                </p>
+                <p>
+                    <label for="program">Carrera:</label><br>
+                    <select id="program" name="program">
+                        <option value="sistemas">Ciencias de la computacion</option>
+                        <option value="industrial">Matematicas</option>
+                        <option value="civil">ciencia de datos</option>
+                        <option value="administracion">Fisica</option>
+                    </select>
+                </p>
+                <p>
+                    <label for="semester">Semestre:</label><br>
+                    <input type="number" id="semester" name="semester" min="1" max="12">
+                </p>
+                <p>
+                    <label for="reason">Motivo de contacto:</label><br>
+                    <input type="text" id="reason" name="reason">
+                </p>
+                <p>
+                    <label for="message">Mensaje:</label><br>
+                    <textarea id="message" name="message" rows="5" cols="30"></textarea>
+                </p>
+                <p>
+                    <input type="checkbox" id="accept" name="accept">
+                    <label for="accept">Acepto los términos y condiciones</label>
+                </p>
+                <p>
+                    <button type="submit">Enviar</button>
+                </p>
+            </form>
+        </section>
+    </main>
+
+    <hr color="#1F4E79">
+
+    <footer>
+        <p align="center">
+            <font color="#666666">◆ &copy; 2026 Freddy Valenzuela - Yachay tech ◆</font>
+        </p>
+    </footer>
+</body>
+
+</html>
