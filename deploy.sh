@@ -58,8 +58,16 @@ else
     sudo rm -f "$SITE_DIR/deploy.sh"
 fi
 
-# [4] VirtualHost HTTP :80
-step 4 "Creando VirtualHost :80 ($DOMAIN.conf)"
+# [4] Asegurar permisos legibles por Apache
+step 4 "Fijando permisos legibles por Apache"
+sudo chown -R root:www-data "$SITE_DIR"
+sudo find "$SITE_DIR" -type d -exec chmod 755 {} +
+sudo find "$SITE_DIR" -type f -exec chmod 644 {} +
+sudo a2enmod mime >/dev/null 2>&1 || true
+echo "Permisos y módulo mime configurados"
+
+# [5] VirtualHost HTTP :80
+step 5 "Creando VirtualHost :80 ($DOMAIN.conf)"
 sudo tee "$SITES_DIR/$DOMAIN.conf" >/dev/null <<EOF
 <VirtualHost *:80>
     ServerName $DOMAIN
@@ -76,8 +84,8 @@ sudo tee "$SITES_DIR/$DOMAIN.conf" >/dev/null <<EOF
 </VirtualHost>
 EOF
 
-# [5] Certificado con SAN (mkcert si está disponible, si no autofirmado)
-step 5 "Generando certificado SSL con SAN DNS:$DOMAIN"
+# [6] Certificado con SAN (mkcert si está disponible, si no autofirmado)
+step 6 "Generando certificado SSL con SAN DNS:$DOMAIN"
 sudo mkdir -p "$SSL_DIR"
 CAROOT="${CAROOT:-$HOME/.local/share/mkcert}"
 if command -v mkcert >/dev/null 2>&1 && [[ -f "$CAROOT/rootCA.pem" ]]; then
@@ -96,8 +104,8 @@ else
 fi
 sudo chmod 600 "$SSL_DIR/$DOMAIN.key"
 
-# [6] VirtualHost HTTPS :443
-step 6 "Creando VirtualHost :443 ($DOMAIN-ssl.conf)"
+# [7] VirtualHost HTTPS :443
+step 7 "Creando VirtualHost :443 ($DOMAIN-ssl.conf)"
 sudo tee "$SITES_DIR/$DOMAIN-ssl.conf" >/dev/null <<EOF
 <VirtualHost *:443>
     ServerName $DOMAIN
@@ -119,8 +127,8 @@ sudo tee "$SITES_DIR/$DOMAIN-ssl.conf" >/dev/null <<EOF
 </VirtualHost>
 EOF
 
-# [7] Modificar /etc/hosts
-step 7 "Configurando resolución local en /etc/hosts"
+# [8] Modificar /etc/hosts
+step 8 "Configurando resolución local en /etc/hosts"
 if grep -qE "[[:space:]]$DOMAIN([[:space:]]|\$)" /etc/hosts; then
     echo "La entrada para $DOMAIN ya existe"
 else
@@ -128,19 +136,19 @@ else
     echo "Añadido: 127.0.0.1 -> $DOMAIN"
 fi
 
-# [8] Validar configuración de Apache
-step 8 "Validando configuración de Apache"
+# [9] Validar configuración de Apache
+step 9 "Validando configuración de Apache"
 sudo a2enmod ssl >/dev/null
 sudo a2dissite 000-default.conf >/dev/null 2>&1 || true
 sudo a2ensite "$DOMAIN.conf" "$DOMAIN-ssl.conf" >/dev/null
 sudo apache2ctl configtest
 
-# [9] Recargar Apache
-step 9 "Recargando Apache"
+# [10] Recargar Apache
+step 10 "Recargando Apache"
 sudo systemctl reload apache2
 
-# [10] Verificar y abrir navegador
-step 10 "Verificación final"
+# [11] Verificar y abrir navegador
+step 11 "Verificación final"
 sleep 1
 HTTP_CODE=$(curl -s -o /dev/null -w '%{http_code}' "http://$DOMAIN" || true)
 HTTPS_CODE=$(curl -sk -o /dev/null -w '%{http_code}' "https://$DOMAIN" || true)
